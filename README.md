@@ -16,6 +16,15 @@ Now it's one command. **Zero friction = more memes = better vibes.**
 
 ## Install
 
+### Via ClawHub (recommended)
+
+```bash
+npm i -g clawhub
+clawhub install agent-memes
+```
+
+### Manual
+
 ```bash
 # 1. Get the meme library (images stored via Git LFS)
 git lfs install

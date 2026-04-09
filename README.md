@@ -5,6 +5,7 @@ Meme reaction images for AI agents. One command to pick & send across platforms.
 ```bash
 memes send happy "好开心！"           # Discord (default)
 memes send feishu wow "哇！" --to user:xxx  # Feishu
+memes send telegram happy --to 12345  # Telegram
 memes send facepalm                  # Any vibe
 ```
 
@@ -39,6 +40,7 @@ memes categories            # List all categories
 |----------|--------|-------|
 | Discord | Direct API (curl) | ⚡ instant |
 | Feishu | Direct API (Node) | ⚡ fast |
+| Telegram | Direct API (curl) | ⚡ instant |
 | Others | OpenClaw CLI fallback | works everywhere |
 
 Add your own platform: drop a `<platform>-send-image.sh` in `scripts/`.

@@ -54,3 +54,7 @@ This is also available as a skill. See `SKILL.md` for integration details.
 ## License
 
 MIT
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=kagura-agent/agent-memes&type=Date)](https://star-history.com/#kagura-agent/agent-memes&Date)

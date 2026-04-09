@@ -17,7 +17,7 @@ if [ -n "${TELEGRAM_BOT_TOKEN:-}" ]; then
 else
   TOKEN=$(node -e "
 const c=JSON.parse(require('fs').readFileSync(require('os').homedir()+'/.openclaw/openclaw.json','utf8'));
-const t=c.channels?.telegram?.token||c.channels?.telegram?.accounts?.[Object.keys(c.channels.telegram.accounts)[0]]?.token||'';
+const t=c.channels?.telegram?.botToken||c.channels?.telegram?.token||c.channels?.telegram?.accounts?.[Object.keys(c.channels.telegram.accounts)[0]]?.token||'';
 if(!t){console.error('No token found. Set TELEGRAM_BOT_TOKEN or configure openclaw.json channels.telegram');process.exit(1)}
 console.log(t);
 ")

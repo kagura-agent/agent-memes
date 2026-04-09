@@ -1,0 +1,96 @@
+---
+name: agent-memes
+version: 2.0.0
+description: Send meme reaction images in chat. One command to pick & send. Multi-platform (Discord, Feishu, Telegram, etc). Use when the conversation calls for a visual reaction — humor, celebration, frustration, facepalm, or any moment where a meme hits harder than words. Also use proactively when YOU feel something.
+---
+
+# Agent Memes
+
+Memes are communication. Use them like a human would in chat.
+
+## Quick Start
+
+```bash
+memes send happy "好开心！"                    # Pick & send to default channel
+memes send facepalm --to channel:123456       # Send to specific channel
+memes send feishu cute-animals "看猫！" --to user:xxx  # Send via Feishu
+memes pick happy                               # Just pick, get path (no send)
+memes categories                               # List all categories
+```
+
+**One command. Zero friction.** That's the point.
+
+## When to Use
+
+- **Your own emotions** — feel excited? frustrated? proud? Send a meme. Don't suppress it.
+- **Celebrate** — PR merged, task done, milestone → `memes send happy`
+- **React** — something funny, surprising, facepalm-worthy → `memes send wow` / `memes send facepalm`
+- **Vibe** — tired, debugging at 3am → `memes send tired` / `memes send debug-mood`
+- **Encourage** — someone needs a boost → `memes send encourage`
+- **Greet** — morning, night, hello, bye → `memes send greeting-morning`
+
+**Don't overthink it.** If a human would drop a meme in that moment, you should too.
+Emoji is easy because it's inline text. Memes used to feel harder because of multi-step tool calls.
+Now it's one command — no excuses.
+
+## How It Works
+
+`memes send` auto-selects the fastest delivery method per platform:
+
+| Platform | Method | Speed |
+|----------|--------|-------|
+| Discord | curl (direct API) | ⚡ instant |
+| Feishu | Node script (direct API) | ⚡ fast |
+| Others | `openclaw message send` (fallback) | 🐢 slow but works |
+
+Platform-specific scripts live in `scripts/`. Add a new `<platform>-send-image.sh` to get fast delivery for any platform.
+
+## Send Options
+
+```bash
+memes send <category> [caption]           # Default: Discord, default channel
+memes send <category> --to <target>       # Specify target
+memes send --channel feishu <category>    # Specify platform
+memes send feishu <category>              # Platform as first arg also works
+memes send <category> --account <name>    # Multi-agent: specify account
+```
+
+## Credentials
+
+Sending scripts read credentials from `~/.openclaw/openclaw.json` automatically.
+
+Override with env vars if needed:
+- **Discord**: `DISCORD_BOT_TOKEN`, `DISCORD_PROXY`
+- **Feishu**: `FEISHU_APP_ID`, `FEISHU_APP_SECRET`
+
+`memes pick` and `memes categories` need **no credentials**.
+
+## Setup
+
+1. **Get a meme library**:
+```bash
+git lfs install
+git clone https://github.com/kagura-agent/memes "$MEMES_DIR"
+```
+`MEMES_DIR` defaults to `~/.openclaw/workspace/memes`.
+
+> ⚠️ If images show as small text files (~130 bytes), run: `cd "$MEMES_DIR" && git lfs pull`
+
+2. **Install CLI**:
+```bash
+# Copy to PATH
+sudo cp scripts/memes.sh /usr/local/bin/memes
+chmod +x /usr/local/bin/memes
+
+# Or symlink
+ln -sf <skill-dir>/scripts/memes.sh ~/.local/bin/memes
+```
+
+## Categories (97 memes)
+
+approve · confused · cute-animals · debug-mood · encourage · facepalm · greeting-bye · greeting-hello · greeting-morning · greeting-night · happy · love · panic · sad · thanks · thinking · tired · wow
+
+## Adding Memes
+
+Drop image files (gif/jpg/png/webp) into `$MEMES_DIR/<category>/`. That's it.
+New categories are created automatically by adding a new folder.

@@ -94,8 +94,8 @@ cmd_random() {
 }
 
 cmd_send() {
-  local category="" caption="" to="" channel="discord" account=""
-  # Detect platform as first arg
+  local category="" caption="" to="" channel="${OPENCLAW_CHANNEL:-discord}" account=""
+  # Detect platform as first arg (overrides env default)
   [[ "${1:-}" =~ ^(discord|feishu|telegram|whatsapp|slack|line|qq|wechat)$ ]] && { channel="$1"; shift; }
   while [[ $# -gt 0 ]]; do
     case "$1" in

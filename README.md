@@ -6,7 +6,7 @@ Meme reaction images for AI agents. One command to pick & send across platforms.
 memes send happy "好开心！"           # Discord (default)
 memes send feishu wow "哇！" --to user:xxx  # Feishu
 memes send telegram happy --to 12345  # Telegram
-memes send facepalm                  # Any vibe
+memes send facepalm                  # Auto-detects platform via OPENCLAW_CHANNEL
 ```
 
 ## Why?
@@ -42,6 +42,8 @@ memes send <category> [caption] [--to target] [--channel platform]
 memes pick <category>       # Just pick, no send
 memes categories            # List all categories
 ```
+
+Auto-detects platform from `OPENCLAW_CHANNEL` env var. Set `MEMES_DEFAULT_CHANNEL` (Discord) or `MEMES_DEFAULT_TELEGRAM` to skip `--to`.
 
 ## Multi-Platform
 

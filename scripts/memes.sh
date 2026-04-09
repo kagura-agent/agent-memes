@@ -18,13 +18,14 @@ Commands:
   send <category> [caption] [--to target] [--channel platform] [--account name]
   categories              List all categories with counts
 
-Platforms with fast send: discord, feishu
+Platforms with fast send: discord, feishu, telegram
 Other platforms fall back to: openclaw message send
 
 Examples:
   memes send happy "好开心！" --to <channel_id>         # → Discord
   memes send facepalm --to channel:1491636222853124176  # → Discord #work
   memes send feishu cute-animals "看！" --to user:xxx   # → Feishu
+  memes send telegram wow --to 12345678                 # → Telegram
 EOF
   exit 1
 }
@@ -131,6 +132,16 @@ cmd_send() {
         node "$script" "${to:-}" "$meme_path" ${caption:+"$caption"}
       else
         _send_openclaw "$meme_path" "$caption" "$to" "$channel" "$account"
+      fi
+      ;;
+    telegram)
+      local script="$SCRIPTS_DIR/telegram-send-image.sh"
+      local target="${to:-${MEMES_DEFAULT_TELEGRAM:-}}"
+      [[ -z "$target" ]] && { echo "Error: --to <chat_id> required (or set MEMES_DEFAULT_TELEGRAM)" >&2; exit 1; }
+      if [[ -x "$script" ]]; then
+        bash "$script" "$target" "$meme_path" "$caption"
+      else
+        _send_openclaw "$meme_path" "$caption" "$to" "telegram" "$account"
       fi
       ;;
     *)

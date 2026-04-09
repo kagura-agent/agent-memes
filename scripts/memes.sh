@@ -128,10 +128,12 @@ cmd_send() {
       ;;
     feishu)
       local script="$SCRIPTS_DIR/feishu-send-image.mjs"
+      local target="${to:-${MEMES_DEFAULT_FEISHU:-}}"
+      [[ -z "$target" ]] && { echo "Error: --to <target> required (or set MEMES_DEFAULT_FEISHU)" >&2; exit 1; }
       if [[ -f "$script" ]]; then
-        node "$script" "${to:-}" "$meme_path" ${caption:+"$caption"}
+        node "$script" "$target" "$meme_path" ${caption:+"$caption"}
       else
-        _send_openclaw "$meme_path" "$caption" "$to" "$channel" "$account"
+        _send_openclaw "$meme_path" "$caption" "$to" "feishu" "$account"
       fi
       ;;
     telegram)

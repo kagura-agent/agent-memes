@@ -12,7 +12,7 @@ else
   git clone https://github.com/kagura-agent/memes "$MEME_DIR"
 fi
 
-echo "✅ Memes ready at $MEME_DIR ($(find "$MEME_DIR" -type f \( -name '*.gif' -o -name '*.jpg' -o -name '*.png' \) | wc -l) files)"
+echo "✅ Memes ready at $MEME_DIR ($(find "$MEME_DIR" -type f \( -name '*.gif' -o -name '*.jpg' -o -name '*.png' -o -name '*.webp' \) | wc -l) files)"
 
 # Install feishu-send-image.mjs for fast direct-API sending (~2s vs ~15s CLI)
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"

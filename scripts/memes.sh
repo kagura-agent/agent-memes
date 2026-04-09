@@ -13,6 +13,8 @@ Usage: memes <command> [args]
 
 Commands:
   pick <category>         Randomly pick a meme, print its path
+  list <category>         List all memes in a category
+  random                  Pick from any category at random
   send <category> [caption] [--to target] [--channel platform] [--account name]
   categories              List all categories with counts
 
@@ -68,6 +70,26 @@ cmd_pick() {
   while IFS= read -r f; do files+=("$f"); done < <(find "$dir" -maxdepth 1 -type f \( -name '*.gif' -o -name '*.jpg' -o -name '*.png' -o -name '*.webp' \) 2>/dev/null)
   [[ ${#files[@]} -eq 0 ]] && { echo "Error: No memes in '$category'" >&2; exit 1; }
   echo "${files[$((RANDOM % ${#files[@]}))]}"
+}
+
+cmd_list() {
+  local category="${1:-}"
+  [[ -z "$category" ]] && { echo "Usage: memes list <category>" >&2; exit 1; }
+  local dir="$MEMES_DIR/$category"
+  [[ ! -d "$dir" ]] && { echo "Error: Category '$category' not found." >&2; exit 1; }
+  find "$dir" -maxdepth 1 -type f \( -name '*.gif' -o -name '*.jpg' -o -name '*.png' -o -name '*.webp' \) 2>/dev/null | sort
+}
+
+cmd_random() {
+  local cats=()
+  for dir in "$MEMES_DIR"/*/; do
+    [[ -d "$dir" ]] || continue
+    local name=$(basename "$dir"); [[ "$name" == .* ]] && continue
+    cats+=("$name")
+  done
+  [[ ${#cats[@]} -eq 0 ]] && { echo "Error: No categories found" >&2; exit 1; }
+  local cat="${cats[$((RANDOM % ${#cats[@]}))]}"
+  cmd_pick "$cat"
 }
 
 cmd_send() {
@@ -138,6 +160,8 @@ _send_openclaw() {
 [[ $# -lt 1 ]] && usage
 case "$1" in
   pick)       shift; cmd_pick "$@" ;;
+  list)       shift; cmd_list "$@" ;;
+  random)     cmd_random ;;
   send)       shift; cmd_send "$@" ;;
   categories) cmd_categories ;;
   -h|--help)  usage ;;

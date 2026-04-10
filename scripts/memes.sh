@@ -3,6 +3,11 @@
 set -euo pipefail
 
 MEMES_DIR="${MEMES_DIR:-$HOME/.openclaw/workspace/memes}"
+# Load config file if present (sets defaults for MEMES_DEFAULT_*, OPENCLAW_CHANNEL, etc.)
+MEMES_CONFIG="${MEMES_CONFIG:-$HOME/.config/memes/config}"
+[[ -f "$MEMES_CONFIG" ]] && source "$MEMES_CONFIG"
+# Also check legacy location
+[[ -f "$HOME/.memesrc" ]] && source "$HOME/.memesrc"
 # Auto-detect scripts dir: same directory as this script, or override with MEMES_SCRIPTS
 SCRIPTS_DIR="${MEMES_SCRIPTS:-$(cd "$(dirname "$(readlink -f "$0" 2>/dev/null || echo "$0")")/.." 2>/dev/null && pwd)/scripts}"
 [[ ! -d "$SCRIPTS_DIR" ]] && SCRIPTS_DIR="$(dirname "$(readlink -f "$0" 2>/dev/null || echo "$0")")"

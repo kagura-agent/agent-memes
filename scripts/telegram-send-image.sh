@@ -23,11 +23,21 @@ console.log(t);
 ")
 fi
 
+# Detect if GIF → use sendAnimation, otherwise sendPhoto
+EXT="${IMAGE_PATH##*.}"
+if [[ "${EXT,,}" == "gif" ]]; then
+  API_METHOD="sendAnimation"
+  FILE_FIELD="animation"
+else
+  API_METHOD="sendPhoto"
+  FILE_FIELD="photo"
+fi
+
 CURL_ARGS=(
   -s
   --max-time 30
   -F "chat_id=${CHAT_ID}"
-  -F "photo=@${IMAGE_PATH}"
+  -F "${FILE_FIELD}=@${IMAGE_PATH}"
 )
 
 if [ -n "$CAPTION" ]; then
@@ -39,6 +49,6 @@ if [ -n "$PROXY" ]; then
   CURL_ARGS+=(-x "$PROXY")
 fi
 
-RESULT=$(curl "${CURL_ARGS[@]}" "https://api.telegram.org/bot${TOKEN}/sendPhoto")
+RESULT=$(curl "${CURL_ARGS[@]}" "https://api.telegram.org/bot${TOKEN}/${API_METHOD}")
 
 echo "$RESULT" | node -e "let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const r=JSON.parse(d);if(r.ok)console.log('Sent! Message ID: '+r.result.message_id);else{console.error(r.description||JSON.stringify(r));process.exit(1)}}catch{console.error(d);process.exit(1)}})"

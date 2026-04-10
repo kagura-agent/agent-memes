@@ -68,6 +68,8 @@ cmd_pick() {
     [赞]=approve [好]=approve
     [debug]=debug-mood [bug]=debug-mood
     [迷惑]=confused [懵]=confused
+    [摊手]=shrug [无奈]=shrug [没办法]=shrug [随便]=shrug
+    [干活]=working [忙]=working [在搞]=working [coding]=working
   )
   category="${ALIASES[$category]:-$category}"
   local dir="$MEMES_DIR/$category"
